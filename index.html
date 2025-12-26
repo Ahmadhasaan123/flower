@@ -2,15 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Draw Flowers for My Love 💐</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌸 Draw Flowers for My Love 💕</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         html, body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #8A2BE2 0%, #FF69B4 50%, #FFB6C1 100%);
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100%;
+            touch-action: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Welcome overlay for first visit */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.95), rgba(255, 105, 180, 0.95));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .welcome-content {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 25px;
+            max-width: 90%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .welcome-title {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-family: 'Great Vibes', cursive;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .welcome-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        
+        .start-btn {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .start-btn:hover, .start-btn:active {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
         }
         
         .container {
@@ -20,29 +96,58 @@
             width: 100%;
             height: 100vh;
             display: flex;
-            flex-direction: column-reverse;
-            align-items: start;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
         }
         
-        .clean-btn {
-            z-index: 1;
-            font-family: 'Poppins', sans-serif;
-            font-size: 15px;
+        .header {
+            width: 100%;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .header h1 {
             color: white;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-            user-select: none;
-            padding: 0 0 15px 25px;
-            cursor: pointer;
-            text-decoration: underline;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-            background: none;
-            border: none;
-            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-family: 'Great Vibes', cursive;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
         }
         
-        .clean-btn:hover {
-            opacity: 1;
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-btn:hover, .control-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
         
         canvas {
@@ -51,81 +156,349 @@
             left: 0;
             display: block;
             cursor: crosshair;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
         
         .instruction {
             position: fixed;
-            top: 10%;
-            left: 20%;
-            width: 30%;
+            top: 50%;
+            left: 50%;
             transform: translate(-50%, -50%);
             color: white;
             text-align: center;
-           
+            font-size: clamp(24px, 5vw, 36px);
             font-family: 'Great Vibes', cursive;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             user-select: none;
             pointer-events: none;
-            z-index: 1;
-            animation: pulse 2s infinite;
+            z-index: 2;
+            animation: float 3s ease-in-out infinite;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 90%;
+            line-height: 1.4;
         }
         
         .love-message {
             position: fixed;
-            bottom: 80px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
             color: white;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: clamp(14px, 4vw, 18px);
             font-family: 'Poppins', sans-serif;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
-            z-index: 1;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            max-width: 85%;
+            line-height: 1.5;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        .flower-counter {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 1rem;
             background: rgba(0, 0, 0, 0.2);
             padding: 10px 20px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .back-home {
+            position: fixed;
+            bottom: 30px;
+            left: 20px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .back-home:hover, .back-home:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .touch-hint {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            text-align: center;
+            z-index: 2;
+            animation: fadeInOut 5s ease-in-out infinite;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 8px 15px;
             border-radius: 20px;
-            backdrop-filter: blur(5px);
-            max-width: 80%;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        /* Floating hearts animation */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 20px;
+            animation: floatUp 15s linear infinite;
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+            50% { transform: translate(-50%, -50%) translateY(-10px); }
         }
         
         @keyframes pulse {
-            0% { opacity: 0.7; }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
-            100% { opacity: 0.7; }
         }
         
-        @media all and (min-width: 640px) {
-            .instruction {
-                font-size: 45px;
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
             }
         }
         
-        @media all and (max-width: 768px) {
-            .instruction {
-                font-size: 30px;
+        /* Mobile-specific optimizations */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.2rem;
             }
+            
+            .instruction {
+                font-size: clamp(20px, 6vw, 28px);
+                padding: 15px 20px;
+            }
+            
             .love-message {
-                font-size: 1rem;
-                bottom: 60px;
+                bottom: 90px;
+                padding: 12px 20px;
+                font-size: clamp(13px, 3.5vw, 16px);
             }
+            
+            .flower-counter {
+                bottom: 25px;
+                font-size: 0.9rem;
+                padding: 8px 15px;
+            }
+            
+            .back-home {
+                padding: 10px 15px;
+                font-size: 0.8rem;
+                bottom: 25px;
+            }
+            
+            .control-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .touch-hint {
+                top: 70px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 12px 15px;
+            }
+            
+            .welcome-content {
+                padding: 20px;
+            }
+            
+            .welcome-title {
+                font-size: 1.7rem;
+            }
+            
+            .welcome-text {
+                font-size: 1rem;
+            }
+            
+            .start-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .control-btn {
+                width: 38px;
+                height: 38px;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            .love-message {
+                bottom: 80px;
+                max-width: 90%;
+            }
+        }
+        
+        /* Prevent text selection */
+        .no-select {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        /* Loading animation */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
     <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay" id="welcomeOverlay">
+        <div class="welcome-content">
+            <h1 class="welcome-title">🌸 Welcome, My Love 🌸</h1>
+            <p class="welcome-text">
+                Tap anywhere on the screen to create beautiful flowers.<br>
+                Each flower represents my love for you, Tayyba.
+            </p>
+            <button class="start-btn" id="startBtn">
+                Start Creating Magic <i class="fas fa-sparkles"></i>
+            </button>
+        </div>
+    </div>
+    
+    <!-- Loading screen -->
+    <div class="loading" id="loadingScreen">
+        <div class="loader"></div>
+        <p>Loading magical garden...</p>
+    </div>
+    
     <div class="container">
-        <button class="clean-btn" id="cleanBtn">
-            Clear Canvas
-        </button>
+        <!-- Header with controls -->
+        <div class="header">
+            <h1>🌸 Our Flower Garden 💕</h1>
+            <div class="controls">
+                
+            </div>
+        </div>
+        
+        <!-- Canvas -->
+        <canvas id="flowersCanvas"></canvas>
+        
+        <!-- Floating hearts background -->
+        <div class="floating-hearts" id="floatingHearts"></div>
+        
+        <!-- Instruction -->
+        <div class="instruction no-select" id="instruction">
+            Tap to create flowers 🌸
+        </div>
+        
+        <!-- Touch hint for mobile -->
+        <div id="touchHint">
+         
+        </div>
+        
+        <!-- Love message -->
+        <div class=" no-select">
+         
+        </div>
+        
+
+        
+        <!-- Back to home button -->
+        <a href="#" class="back-home no-select">
+          
+        </a>
     </div>
-    
-    <canvas id="flowersCanvas"></canvas>
-    
-    <div class="instruction">
-        Tap on screen 🌸
-    </div>
-    
 
     <!-- Shaders -->
     <script type="x-shader/x-fragment" id="fragmentShader">
@@ -235,8 +608,9 @@
             vec2 cursor = vUv - u_cursor.xy;
             cursor.x *= u_ratio;
             
-            vec3 stem_color = vec3(.1 + u_stop_randomizer[0] * .6, .6, .2);
-            vec3 flower_color = vec3(.6 + .5 * u_stop_randomizer[1], .1, .9 - .5 * u_stop_randomizer[1]);
+            // More vibrant colors
+            vec3 stem_color = vec3(.1 + u_stop_randomizer[0] * .6, .7, .3);
+            vec3 flower_color = vec3(.8 + .5 * u_stop_randomizer[1], .2, .9 - .5 * u_stop_randomizer[1]);
 
             float angle = .5 * (u_stop_randomizer[0] - .5);
 
@@ -267,6 +641,10 @@
             color.r *= 1. - (.5 * flower_back_shape * flower_front_shape);
             color.b *= 1. - (flower_back_shape * flower_front_shape);
 
+            // Add glow effect
+            float glow = flower_back_shape * 0.3 + flower_front_shape * 0.4;
+            color += glow * vec3(1.0, 0.8, 0.9);
+
             color *= u_clean;
 
             gl_FragColor = vec4(color, 1.);
@@ -282,86 +660,139 @@
     </script>
 
     <script>
-        // Initialize Three.js and setup
+        // DOM Elements
         const canvasEl = document.querySelector('#flowersCanvas');
-        const cleanBtn = document.querySelector('#cleanBtn');
-
-        const pointer = {
-            x: 0.66,
-            y: 0.3,
-            clicked: false,
-            vanishCanvas: false
-        };
-
-        let basicMaterial, shaderMaterial;
-        let renderer = new THREE.WebGLRenderer({
-            canvas: canvasEl,
-            alpha: true,
-            antialias: true
-        });
+        const welcomeOverlay = document.querySelector('#welcomeOverlay');
+        const loadingScreen = document.querySelector('#loadingScreen');
+        const startBtn = document.querySelector('#startBtn');
+        const clearBtn = document.querySelector('#clearBtn');
+        const soundBtn = document.querySelector('#soundBtn');
+        const helpBtn = document.querySelector('#helpBtn');
+        const instruction = document.querySelector('#instruction');
+        const touchHint = document.querySelector('#touchHint');
+        const flowerCounter = document.querySelector('#flowerCount');
+        const floatingHearts = document.querySelector('#floatingHearts');
         
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        let sceneShader = new THREE.Scene();
-        let sceneBasic = new THREE.Scene();
-        let camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 10);
-        let clock = new THREE.Clock();
-
-        let renderTargets = [
-            new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight),
-            new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight),
-        ];
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Click to draw flowers
-            window.addEventListener('click', e => {
-                pointer.x = e.pageX / window.innerWidth;
-                pointer.y = e.pageY / window.innerHeight;
-                pointer.clicked = true;
-            });
-            
-            // Touch support for mobile
-            window.addEventListener('touchstart', e => {
-                e.preventDefault();
-                pointer.x = e.targetTouches[0].pageX / window.innerWidth;
-                pointer.y = e.targetTouches[0].pageY / window.innerHeight;
-                pointer.clicked = true;
-            });
-            
-            // Touch move for continuous drawing
-            window.addEventListener('touchmove', e => {
-                e.preventDefault();
-                if (e.targetTouches.length > 0) {
-                    pointer.x = e.targetTouches[0].pageX / window.innerWidth;
-                    pointer.y = e.targetTouches[0].pageY / window.innerHeight;
-                    pointer.clicked = true;
-                }
-            }, { passive: false });
-            
-            // Clean button
-            cleanBtn.addEventListener('click', cleanCanvas);
-            
-            // Auto-clean after 2 minutes of inactivity
-            let timeoutId;
-            function resetInactivityTimer() {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    cleanCanvas();
-                }, 120000); // 2 minutes
+        // State variables
+        let flowerCount = 0;
+        let isSoundOn = true;
+        let isFirstVisit = true;
+        let isDrawing = false;
+        let drawInterval;
+        
+        // Pointer object
+        const pointer = {
+            x: 0.5,
+            y: 0.5,
+            clicked: false,
+            vanishCanvas: false,
+            isTouching: false
+        };
+        
+        // Three.js variables
+        let basicMaterial, shaderMaterial;
+        let renderer, sceneShader, sceneBasic, camera, clock;
+        let renderTargets = [];
+        
+        // Background music
+        const bgMusic = new Audio('https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c6ff1bab.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.3;
+        
+        // Initialize the app
+        function initApp() {
+            // Check if it's first visit
+            if (localStorage.getItem('flowersFirstVisit') !== 'true') {
+                isFirstVisit = true;
+                welcomeOverlay.style.display = 'flex';
+            } else {
+                welcomeOverlay.style.display = 'none';
+                startDrawingApp();
             }
             
-            window.addEventListener('click', resetInactivityTimer);
-            window.addEventListener('touchstart', resetInactivityTimer);
-            resetInactivityTimer();
+            // Create floating hearts
+            createFloatingHearts();
+            
+            // Event listeners for buttons
+            startBtn.addEventListener('click', startDrawingApp);
+            clearBtn.addEventListener('click', cleanCanvas);
+            soundBtn.addEventListener('click', toggleSound);
+            helpBtn.addEventListener('click', showHelp);
+            
+            // Handle visibility change for mobile
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (isSoundOn) bgMusic.pause();
+                } else {
+                    if (isSoundOn) bgMusic.play();
+                }
+            });
         }
-
-        function cleanCanvas() {
-            pointer.vanishCanvas = true;
+        
+        function startDrawingApp() {
+            welcomeOverlay.style.display = 'none';
+            localStorage.setItem('flowersFirstVisit', 'true');
+            loadingScreen.style.display = 'block';
+            
+            // Start background music
+            if (isSoundOn) {
+                bgMusic.play().catch(e => console.log("Audio play failed:", e));
+            }
+            
+            // Initialize Three.js after a short delay
             setTimeout(() => {
-                pointer.vanishCanvas = false;
-            }, 50);
+                initThreeJS();
+                loadingScreen.style.display = 'none';
+                
+                // Auto-draw a few flowers on load
+                setTimeout(() => {
+                    drawAutoFlowers();
+                }, 500);
+                
+                // Hide instruction after 5 seconds
+                setTimeout(() => {
+                    instruction.style.opacity = '0';
+                    setTimeout(() => {
+                        instruction.style.display = 'none';
+                    }, 1000);
+                }, 5000);
+            }, 1000);
         }
-
+        
+        function initThreeJS() {
+            // Initialize Three.js
+            renderer = new THREE.WebGLRenderer({
+                canvas: canvasEl,
+                alpha: true,
+                antialias: true,
+                powerPreference: "high-performance"
+            });
+            
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            sceneShader = new THREE.Scene();
+            sceneBasic = new THREE.Scene();
+            camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 10);
+            clock = new THREE.Clock();
+            
+            renderTargets = [
+                new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight),
+                new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight),
+            ];
+            
+            // Create plane with shader
+            createPlane();
+            
+            // Setup event listeners for drawing
+            setupDrawingEvents();
+            
+            // Start rendering
+            render();
+            
+            // Handle window resize
+            window.addEventListener('resize', handleResize);
+            handleResize();
+        }
+        
         function createPlane() {
             shaderMaterial = new THREE.ShaderMaterial({
                 uniforms: {
@@ -386,11 +817,253 @@
             sceneBasic.add(planeBasic);
             sceneShader.add(planeShader);
         }
-
+        
+        function setupDrawingEvents() {
+            // Mouse events
+            window.addEventListener('mousedown', (e) => {
+                isDrawing = true;
+                drawFlower(e);
+                startContinuousDrawing();
+            });
+            
+            window.addEventListener('mousemove', (e) => {
+                if (isDrawing) {
+                    drawFlower(e);
+                }
+            });
+            
+            window.addEventListener('mouseup', () => {
+                isDrawing = false;
+                stopContinuousDrawing();
+            });
+            
+            // Touch events for mobile
+            window.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                isDrawing = true;
+                pointer.isTouching = true;
+                drawFlower(e.touches[0]);
+                startContinuousDrawing();
+                
+                // Vibrate on touch if supported
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            }, { passive: false });
+            
+            window.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (isDrawing && e.touches.length > 0) {
+                    drawFlower(e.touches[0]);
+                }
+            }, { passive: false });
+            
+            window.addEventListener('touchend', () => {
+                isDrawing = false;
+                pointer.isTouching = false;
+                stopContinuousDrawing();
+            });
+            
+            // Prevent context menu on mobile
+            canvasEl.addEventListener('contextmenu', (e) => e.preventDefault());
+        }
+        
+        function drawFlower(inputEvent) {
+            let x, y;
+            
+            if (inputEvent.pageX !== undefined) {
+                // Mouse event
+                x = inputEvent.pageX / window.innerWidth;
+                y = inputEvent.pageY / window.innerHeight;
+            } else if (inputEvent.clientX !== undefined) {
+                // Touch event coordinates
+                x = inputEvent.clientX / window.innerWidth;
+                y = inputEvent.clientY / window.innerHeight;
+            } else {
+                return;
+            }
+            
+            // Update pointer
+            pointer.x = x;
+            pointer.y = y;
+            pointer.clicked = true;
+            
+            // Increment flower count
+            flowerCount++;
+            flowerCounter.textContent = flowerCount;
+            
+            // Update flower counter color based on count
+            if (flowerCount > 10) {
+                document.querySelector('.flower-counter').style.background = 'rgba(138, 43, 226, 0.3)';
+            }
+            if (flowerCount > 20) {
+                document.querySelector('.flower-counter').style.background = 'rgba(255, 105, 180, 0.3)';
+            }
+            
+            // Play sound effect
+            if (isSoundOn) {
+                playFlowerSound();
+            }
+        }
+        
+        function startContinuousDrawing() {
+            if (drawInterval) clearInterval(drawInterval);
+            drawInterval = setInterval(() => {
+                if (isDrawing) {
+                    // Simulate a random nearby position for continuous drawing
+                    pointer.x += (Math.random() - 0.5) * 0.05;
+                    pointer.y += (Math.random() - 0.5) * 0.05;
+                    pointer.clicked = true;
+                    
+                    flowerCount++;
+                    flowerCounter.textContent = flowerCount;
+                }
+            }, 100);
+        }
+        
+        function stopContinuousDrawing() {
+            if (drawInterval) {
+                clearInterval(drawInterval);
+                drawInterval = null;
+            }
+        }
+        
+        function drawAutoFlowers() {
+            // Draw initial flowers in a heart shape
+            const heartPoints = [
+                [0.5, 0.5], [0.45, 0.55], [0.55, 0.55],
+                [0.4, 0.6], [0.6, 0.6], [0.35, 0.65],
+                [0.65, 0.65], [0.5, 0.7]
+            ];
+            
+            heartPoints.forEach((point, index) => {
+                setTimeout(() => {
+                    pointer.x = point[0];
+                    pointer.y = point[1];
+                    pointer.clicked = true;
+                    
+                    flowerCount++;
+                    flowerCounter.textContent = flowerCount;
+                }, index * 300);
+            });
+        }
+        
+        function cleanCanvas() {
+            pointer.vanishCanvas = true;
+            setTimeout(() => {
+                pointer.vanishCanvas = false;
+            }, 50);
+            
+            // Reset flower count
+            flowerCount = 0;
+            flowerCounter.textContent = flowerCount;
+            document.querySelector('.flower-counter').style.background = 'rgba(0, 0, 0, 0.2)';
+            
+            // Show confirmation
+            showMessage("Canvas cleared!", 2000);
+        }
+        
+        function toggleSound() {
+            isSoundOn = !isSoundOn;
+            const icon = soundBtn.querySelector('i');
+            
+            if (isSoundOn) {
+                icon.className = 'fas fa-volume-up';
+                bgMusic.play().catch(e => console.log("Audio play failed:", e));
+                showMessage("Sound on", 1500);
+            } else {
+                icon.className = 'fas fa-volume-mute';
+                bgMusic.pause();
+                showMessage("Sound off", 1500);
+            }
+        }
+        
+        function playFlowerSound() {
+            // Create a simple sound effect
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = 800 + Math.random() * 400;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+        
+        function showHelp() {
+            welcomeOverlay.style.display = 'flex';
+            const content = welcomeOverlay.querySelector('.welcome-content');
+            content.innerHTML = `
+                <h1 class="welcome-title">How to Use 🌸</h1>
+                <p class="welcome-text" style="text-align: left; font-size: 1rem;">
+                    <i class="fas fa-hand-pointer"></i> <strong>Tap</strong> anywhere to draw a flower<br><br>
+                    <i class="fas fa-hand-holding"></i> <strong>Touch & hold</strong> to draw continuously<br><br>
+                    <i class="fas fa-trash-alt"></i> <strong>Clear button</strong> to start over<br><br>
+                    <i class="fas fa-volume-up"></i> <strong>Sound button</strong> to toggle effects<br><br>
+                    Each flower represents my love for you 💖
+                </p>
+                <button class="start-btn" id="closeHelpBtn">
+                    Got it! <i class="fas fa-heart"></i>
+                </button>
+            `;
+            
+            document.getElementById('closeHelpBtn').addEventListener('click', () => {
+                welcomeOverlay.style.display = 'none';
+            });
+        }
+        
+        function showMessage(text, duration) {
+            const message = document.createElement('div');
+            message.textContent = text;
+            message.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.7);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 50px;
+                z-index: 1000;
+                font-size: 1.1rem;
+                backdrop-filter: blur(10px);
+                animation: fadeInOut 2s ease;
+            `;
+            
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.style.animation = 'fadeOut 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 500);
+            }, duration - 500);
+        }
+        
+        function createFloatingHearts() {
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '❤️';
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 15}s`;
+                heart.style.fontSize = `${15 + Math.random() * 15}px`;
+                heart.style.opacity = `${0.3 + Math.random() * 0.4}`;
+                floatingHearts.appendChild(heart);
+            }
+        }
+        
         function render() {
             shaderMaterial.uniforms.u_clean.value = pointer.vanishCanvas ? 0 : 1;
             shaderMaterial.uniforms.u_texture.value = renderTargets[0].texture;
-
+            
             if (pointer.clicked) {
                 shaderMaterial.uniforms.u_cursor.value = new THREE.Vector2(
                     pointer.x,
@@ -404,65 +1077,47 @@
                 pointer.clicked = false;
             }
             shaderMaterial.uniforms.u_stop_time.value += clock.getDelta();
-
+            
             renderer.setRenderTarget(renderTargets[1]);
             renderer.render(sceneShader, camera);
             basicMaterial.map = renderTargets[1].texture;
             renderer.setRenderTarget(null);
             renderer.render(sceneBasic, camera);
-
+            
             // Swap render targets
             let tmp = renderTargets[0];
             renderTargets[0] = renderTargets[1];
             renderTargets[1] = tmp;
-
+            
             requestAnimationFrame(render);
         }
-
-        function updateSize() {
+        
+        function handleResize() {
             shaderMaterial.uniforms.u_ratio.value = window.innerWidth / window.innerHeight;
             renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        // Initialize everything
-        function init() {
-            createPlane();
-            setupEventListeners();
-            updateSize();
-            render();
             
-            // Auto-draw a few flowers on load
-            setTimeout(() => {
-                // Draw first flower
-                pointer.x = 0.2;
-                pointer.y = 0.2;
-                pointer.clicked = true;
-                
-                // Draw second flower
-                setTimeout(() => {
-                    pointer.x = 0.5;
-                    pointer.y = 0.7;
-                    pointer.clicked = true;
-                    
-                    // Draw third flower
-                    setTimeout(() => {
-                        pointer.x = 0.8;
-                        pointer.y = 0.3;
-                        pointer.clicked = true;
-                    }, 500);
-                }, 300);
-            }, 1000);
+            if (renderTargets[0]) {
+                renderTargets[0].setSize(window.innerWidth, window.innerHeight);
+                renderTargets[1].setSize(window.innerWidth, window.innerHeight);
+            }
+            
+            // Adjust touch hint position for mobile
+            if (window.innerWidth <= 768) {
+                touchHint.style.display = 'block';
+            } else {
+                touchHint.style.display = 'none';
+            }
         }
-
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            updateSize();
-            renderTargets[0].setSize(window.innerWidth, window.innerHeight);
-            renderTargets[1].setSize(window.innerWidth, window.innerHeight);
-        });
-
-        // Start the app
-        init();
+        
+        // Start the app when page loads
+        window.addEventListener('DOMContentLoaded', initApp);
+        
+        // Prevent bounce scrolling on iOS
+        document.body.addEventListener('touchmove', (e) => {
+            if (e.target === canvasEl || e.target === document.documentElement) {
+                e.preventDefault();
+            }
+        }, { passive: false });
     </script>
 </body>
 </html>
